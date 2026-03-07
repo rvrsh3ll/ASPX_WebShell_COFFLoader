@@ -5,6 +5,7 @@ import sys
 import base64
 import requests
 import argparse
+import shlex
 from struct import pack, calcsize
 
 # Based on COFFLoader's beacon_generate.py
@@ -230,7 +231,11 @@ def main():
         if not line:
             continue
 
-        parts = line.split()
+        try:
+            parts = shlex.split(line)
+        except ValueError as e:
+            print(f"[!] Parsing error: {e}")
+            continue
         cmd   = parts[0].lower()
 
         if cmd == "help":
